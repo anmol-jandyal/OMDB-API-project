@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet" />
+		<link rel="stylesheet" href="style.css" />
+	</head>
+
+	<body>
+		<main>
+			<nav>
+				<div class="search-bar-container">
+					<label for="search-input-bar">Search</label>
+					<input type="text" id="search-input-bar" name="search-input-bar" />
+
+					<button id="search-input-btn">Search</button>
+				</div>
+			</nav>
+
+			<div id="search-overlay">
+				<button class="search-close-btn"><i class="ri-close-line"></i></button>
+				<div class="search-card-container card-container"> </div>
+			</div>
+
+			<div class="favorite-section">
+				<h1>Favorites</h1>
+				<div class="favorite-card-container card-container"></div>
+			</div>
+		</main>
+		<script src="/scripts/index.js" type="module"></script>
+	</body>
+</html>
