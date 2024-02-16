@@ -4,32 +4,46 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Document</title>
+		<title>MOVIES OMBD</title>
 		<link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet" />
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;1,100&family=Protest+Revolution&display=swap" rel="stylesheet" />
+
 		<link rel="stylesheet" href="style.css" />
 	</head>
 
 	<body>
+		<nav>
+			<h1>MOVIEapi</h1>
+
+			<button class="nav-search-btn btn">
+				<i class="ri-search-line"></i>
+			</button>
+		</nav>
+
 		<main>
-			<nav>
+			<div id="search-overlay">
 				<div class="search-bar-container">
-					<label for="search-input-bar">Search</label>
+					<!-- <label for="search-input-bar">Search</label> -->
 					<input type="text" id="search-input-bar" name="search-input-bar" />
 
-					<button id="search-input-btn">Search</button>
+					<button class="search-input-btn btn" class="btn">
+						<i class="ri-search-line"></i>
+					</button>
 				</div>
-			</nav>
 
-			<div id="search-overlay">
-				<button class="search-close-btn"><i class="ri-close-line"></i></button>
+				<button class="search-close-btn btn"><i class="ri-close-line"></i></button>
 				<div class="search-card-container card-container"> </div>
 			</div>
 
-			<div class="favorite-section">
+			<section class="favorite-section container-section ">
 				<h1>Favorites</h1>
 				<div class="favorite-card-container card-container"></div>
-			</div>
+			</section>
 		</main>
+
 		<script src="./scripts/index.js" type="module"></script>
 	</body>
 </html>

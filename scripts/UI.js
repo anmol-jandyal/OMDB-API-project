@@ -6,28 +6,34 @@ const favClass = "ri-heart-fill fav-item";
 const unfavClass = "ri-heart-line unfav-item";
 
 function favUnfav(e) {
-	if (e.target.classList.contains("unfav-item")) {
-		e.target.classList.remove("ri-heart-line");
-		e.target.classList.add("ri-heart-fill");
+	if (e.target.classList.contains("fav-icon-heart")) {
+		if (e.target.classList.contains("unfav-item")) {
+			e.target.classList.remove("ri-heart-line");
+			e.target.classList.add("ri-heart-fill");
 
-		e.target.classList.add("fav-item");
-		e.target.classList.remove("unfav-item");
+			e.target.classList.add("fav-item");
+			e.target.classList.remove("unfav-item");
 
-		//adding the movie to the favorite list
-		favoriteList.push(e.target.dataset["title"]);
-	} else if (e.target.classList.contains("fav-item")) {
-		e.target.classList.add("ri-heart-line");
-		e.target.classList.remove("ri-heart-fill");
+			//adding the movie to the favorite list
+			favoriteList.push(e.target.dataset["title"]);
 
-		e.target.classList.remove("fav-item");
-		e.target.classList.add("unfav-item");
+			renderingUi(e.target.dataset["title"], document.querySelector(".favorite-card-container"));
+		} else if (e.target.classList.contains("fav-item")) {
+			e.target.classList.add("ri-heart-line");
+			e.target.classList.remove("ri-heart-fill");
 
-		//removing the element from favorite list
-		favoriteList.splice(favoriteList.indexOf(e.target.dataset["title"]), 1);
+			e.target.classList.remove("fav-item");
+			e.target.classList.add("unfav-item");
+
+			//removing the element from favorite list
+			favoriteList.splice(favoriteList.indexOf(e.target.dataset["title"]), 1);
+
+			//re Render the whole favorite section
+			renderFavoriteList();
+		}
+
+		updateLocalStorage(favoriteList);
 	}
-
-	updateLocalStorage(favoriteList);
-	renderFavoriteList();
 }
 
 export function renderCard(title, release, posterSrc, genre, rating, container) {
@@ -42,7 +48,7 @@ export function renderCard(title, release, posterSrc, genre, rating, container) 
 					src="${posterSrc}"
 					alt="" />
 
-				<div class="flex-container">
+				<div class="card-main-part">
 					<div>
 						<div class="title">Title:${title} </div>
 						<div class="rating">Rating:${rating} </div>
@@ -50,7 +56,7 @@ export function renderCard(title, release, posterSrc, genre, rating, container) 
 						<div class="genre">Genre:${genre}</div>
 					</div>
 					<div class="fav-icon">
-						<i class="${favUnfavClass}"data-title="${title}"></i>
+						<i class="${favUnfavClass} fav-icon-heart"data-title="${title}"></i>
 					
                                                 <!-- 	<i class="ri-heart-fill"></i> -->
 					</div>
@@ -80,7 +86,7 @@ function renderingUi(movieTitle, container) {
 
 export function renderSearchUI(movieTitle) {
 	const container = document.querySelector(`.search-card-container`);
-	container.innerHTML = "";
+	// container.innerHTML = "";
 
 	renderingUi(movieTitle, container);
 }
