@@ -1,10 +1,16 @@
-export function updateLocalStorage(list) {
-	localStorage.setItem("favList", JSON.stringify(list));
+export function updateLocalStorage(data, key) {
+	//it takes two parameter one : data (may be list or anything)
+	//second : key : name of the property under which we store our data
+	localStorage.setItem(key, JSON.stringify(data));
 }
 
-export function fetchListLocalStorage() {
-	if (localStorage.getItem("favList")) return JSON.parse(localStorage.getItem("favList"));
+export function fetchListLocalStorage(key) {
+	const data = localStorage.getItem(key);
 
-	localStorage.setItem("favList", JSON.stringify([]));
+	if (data) {
+		return JSON.parse(data);
+	}
+
+	localStorage.setItem(key, JSON.stringify([]));
 	return [];
 }

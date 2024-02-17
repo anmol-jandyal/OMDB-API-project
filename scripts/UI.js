@@ -1,102 +1,80 @@
 import getData from "./fetchData.js";
-import { updateLocalStorage } from "./localStorage.js";
 import { favoriteList } from "./index.js";
 
 const favClass = "ri-heart-fill fav-item";
 const unfavClass = "ri-heart-line unfav-item";
 
-function favUnfav(e) {
-	if (e.target.classList.contains("fav-icon-heart")) {
-		if (e.target.classList.contains("unfav-item")) {
-			e.target.classList.remove("ri-heart-line");
-			e.target.classList.add("ri-heart-fill");
-
-			e.target.classList.add("fav-item");
-			e.target.classList.remove("unfav-item");
-
-			//adding the movie to the favorite list
-			favoriteList.push(e.target.dataset["title"]);
-
-			renderingUi(e.target.dataset["title"], document.querySelector(".favorite-card-container"));
-		} else if (e.target.classList.contains("fav-item")) {
-			e.target.classList.add("ri-heart-line");
-			e.target.classList.remove("ri-heart-fill");
-
-			e.target.classList.remove("fav-item");
-			e.target.classList.add("unfav-item");
-
-			//removing the element from favorite list
-			favoriteList.splice(favoriteList.indexOf(e.target.dataset["title"]), 1);
-
-			//re Render the whole favorite section
-			renderFavoriteList();
-		}
-
-		updateLocalStorage(favoriteList);
-	}
-}
-
-export function renderCard(title, release, posterSrc, genre, rating, container) {
+/* --------------------------------------------- */
+//creates a card for a movie and return that card
+//take an object movieData containing all the info related
+//to movie
+/* --------------------------------------------- */
+export function createCard(movieData) {
 	const div = document.createElement("div");
 	div.classList.add("movie-card");
 
 	//to check if the movie already marked as favorite or not
-	const favUnfavClass = favoriteList.includes(title) ? favClass : unfavClass;
+	const favUnfavClass = favoriteList.find((ele) => ele.title === movieData.title) ? favClass : unfavClass;
 
 	div.innerHTML = `
         <img
-					src="${posterSrc}"
+					src="${movieData.posterSrc}"
 					alt="" />
 
 				<div class="card-main-part">
 					<div>
-						<div class="title">Title:${title} </div>
-						<div class="rating">Rating:${rating} </div>
-						<div class="releaseDate">Release: ${release}</div>
-						<div class="genre">Genre:${genre}</div>
+						<div class="title">Title:${movieData.title} </div>
+						<div class="rating">Rating:${movieData.rating} </div>
+						<div class="releaseDate">Release: ${movieData.release}</div>
+						<div class="genre">Genre:${movieData.genre}</div>
 					</div>
 					<div class="fav-icon">
-						<i class="${favUnfavClass} fav-icon-heart"data-title="${title}"></i>
+						<i class="${favUnfavClass} fav-icon-heart"data-title="${movieData.title}" data-rating="${movieData.rating}" data-release="${movieData.release}" data-genre="${movieData.genre}"  data-postersrc="${movieData.posterSrc}"></i>
 					
                                                 <!-- 	<i class="ri-heart-fill"></i> -->
 					</div>
 				</div>
         `;
 
-	container.appendChild(div);
+	return div;
 }
 
-function renderingUi(movieTitle, container) {
-	container.addEventListener("click", favUnfav);
+/* --------------------------------------------- */
+//will take the movie title fetch the data from the api and
+//render that item in the form of card
 
+//based upon the value of "apPrClr" the fun will append, prepend or clear the content of the container
+//apPrClr take there values : append , prepend or clear
+//clear first delete all the inner HTML of the container and then add item
+/* --------------------------------------------- */
+export function renderingFetchData(movieTitle, container, apPrClr = "append") {
 	if (movieTitle) {
 		getData(movieTitle).then((data) => {
 			if (data.Response === "False") {
 				alert("Movie Not Found");
 			} else {
-				const rate = data.Ratings.length === 0 ? "Nil" : data.Ratings[0].Value;
+				const rating = data.Ratings.length === 0 ? "Nil" : data.Ratings[0].Value;
 
-				renderCard(data.Title, data.Released, data.Poster, data.Genre, rate, container);
+				const movieData = { title: data.Title, release: data.Released, posterSrc: data.Poster, genre: data.Genre, rating: rating };
+
+				switch (apPrClr) {
+					case "append":
+						container.appendChild(createCard(movieData));
+						break;
+					case "prepend":
+						container.prepend(createCard(movieData));
+						break;
+					case "clear":
+						container.innerHTML = "";
+						container.appendChild(createCard(movieData));
+						break;
+					default:
+						console.log("Parameter value for apPrCl is worng");
+						break;
+				}
 			}
 		});
 	} else {
 		console.log("Invalid input");
-	}
-}
-
-export function renderSearchUI(movieTitle) {
-	const container = document.querySelector(`.search-card-container`);
-	// container.innerHTML = "";
-
-	renderingUi(movieTitle, container);
-}
-
-export function renderFavoriteList() {
-	const favoriteContainer = document.querySelector(".favorite-card-container");
-
-	favoriteContainer.innerHTML = "";
-
-	for (let movieTitle of favoriteList) {
-		renderingUi(movieTitle, favoriteContainer);
 	}
 }
