@@ -21,7 +21,7 @@ function movieDataFromDom(ele) {
 		release: ele.dataset["release"],
 		posterSrc: ele.dataset["postersrc"],
 		genre: ele.dataset["genre"],
-		rate: ele.dataset["rating"],
+		rating: ele.dataset["rating"],
 	};
 }
 
